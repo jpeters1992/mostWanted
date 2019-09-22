@@ -12,7 +12,7 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
-      // TODO: search by traits
+      searchResults = searchByTraits(person); 
       break;
       default:
     app(people); // restart app
@@ -20,7 +20,7 @@ function app(people){
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  mainMenu(searchResults, people);
+  mainMenu(searchResults, people); 
 }
 
 // Menu function to call once you find who you are looking for
@@ -37,13 +37,13 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-    // TODO: get person's info
-    break;
+      displayOption = displayPerson(person)
+      break;
     case "family":
-    // TODO: get person's family
+    // TODO: get person's family (display the names of the family members and their relation to the found person.)
     break;
     case "descendants":
-    // TODO: get person's descendants
+    // TODO: get person's descendants  // USING RECURSION (display the names of the descendants)
     break;
     case "restart":
     app(people); // restart
@@ -58,6 +58,8 @@ function mainMenu(person, people){
 function searchByName(people){
   let firstName = promptFor("What is the person's first name?", chars);
   let lastName = promptFor("What is the person's last name?", chars);
+
+//person in function(person), is an item argument - it's a reference to the current element in the array as filter() checks it against the condition. This is useful for accessing properties, in the case of objects. If the current item passes the condition, it gets sent to the new array.
 
   let foundPerson = people.filter(function(person){
     if(person.firstName === firstName && person.lastName === lastName){
@@ -83,9 +85,22 @@ function displayPerson(person){
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
+  personInfo += "Gender: " + person.gender + "\n";
+  personInfo += "Date of Birth: " + person.dob + "\n";
+  personInfo += "Height: " + person.height + "\n";
+  personInfo += "Weight: " + person.weight + "\n";
+  personInfo += "Eye Color: " + person.eyeColor + "\n";
+  personInfo += "Occupation: " + person.occupation + "\n";
+  personInfo += "Parents: " + person.parents + "\n";
   // TODO: finish getting the rest of the information to display
   alert(personInfo);
 }
+
+
+
+// ---------------------------------------------------------------------------
+
+
 
 // function that prompts and validates user input
 function promptFor(question, valid){
