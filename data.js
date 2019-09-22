@@ -1,4 +1,8 @@
 // You may modify this for testing purposes.
+// objects in an array; individual people are the objects. 
+
+//where ever person is used as a parameter, it is passing tis constant variable data, with all of it's objects. 
+
 const data = [
 	{
 		"id": 272822514,
