@@ -12,7 +12,7 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
-      searchResults = searchByTraits(person); 
+      searchResults = searchByTraits(people); 
       break;
       default:
     app(people); // restart app
@@ -20,9 +20,10 @@ function app(people){
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+
   mainMenu(searchResults, people); 
 }
- 
+
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
 
@@ -41,18 +42,20 @@ function mainMenu(person, people){
       displayOption = displayPerson(person)
       break;
     case "family":
-    // TODO: get person's family (display the names of the family members and their relation to the found person.)
-    break;
+      // TODO: get person's family (display the names of the family members and their relation to the found person.)
+      displayOption = display()
+      break;
     case "descendants":
-    // TODO: get person's descendants  // USING RECURSION (display the names of the descendants)
-    break;
+      // TODO: get person's descendants  // USING RECURSION (display the names of the descendants)
+      displayOption = displayDescendants()
+      break;
     case "restart":
-    app(people); // restart
-    break;
+      app(people); // restart
+      break;
     case "quit":
-    return; // stop execution
+      return; // stop execution
     default:
-    return mainMenu(person, people); // ask again
+      return mainMenu(person, people); // ask again
   }
 }
 
@@ -74,24 +77,124 @@ function searchByName(people){
   return foundPerson;
 }
 
-function searchByTraits(person){
-  let genderTrait = promptFor("Please provide the gender type - male or female.", chars);
-  let heightTrait = promptFor("Please provide the height in centimeters between the numbers 0-99.", chars);
-  let weightTrait = promptFor("Please provide the weight in lbs between the numbers 0-1000.", chars);
-  let eyeColorTrait = promptFor("Please provide the eye color.", chars); 
-  // I might have to add a fifth trait for the grading requirement - search by 2/5 criterias 
+// make a switch case
+function searchByTraits(people){
+  let displayOptionForTraits = prompt("If you know any of these traits about your desired person, type the trait name: 'gender', 'age', 'height', 'weight', 'eye color', or type 'restart' or 'quit'");
+  let searchResults;
+  switch(displayOptionForTraits){
+    case 'gender':
+      searchResults = searchByGender(people);
+      break;
+    case 'eye color':
+      searchResults = searchByEyeColor(people);
+      break;
+    case 'height':
+      searchResults = searchByHeight(people);
+      break;
+    case 'weight':
+      searchResults = searchByWeight(people);
+      break;
+    case 'age':
+      searchResults = searchByAge(people); 
+      break;
+    case 'restart':
+      app(people); // restart
+      break;
+    case 'quit':
+      return; // stop execution
+    default:
+      return searchByTraits(people); // ask again  
+  }
 
-  let filteredTraits = people.filter(function(attributes){ 
-    if (attributes.gender === genderTrait || attributes.height === heightTrait || attributes.weight === weightTrait || attributes.eyeColor === eyeColorTrait){
-      return true;
-    } 
-    else {
-      app(people);
-    }
-  })
-  return filteredTraits;
+  if(searchResults.length > 1 ){
+  return searchByTraits(searchResults);
+  }
+  else if(searchResults.length == 1){
+  return searchResults;
+  }
 }
 
+
+//-----------------------------------------------------------------------------------------------------------------
+// these 5 functions are for the fucntion searchByTraits above.
+
+function searchByGender(people){
+  let genderInput = promptFor("Male or Female?", chars);
+
+  let foundGenderType = people.filter(function(person){
+    if(person.gender === genderInput){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+
+  return foundGenderType;
+}
+
+function searchByEyeColor(people){
+  let EyeColorInput = promptFor("What is the eye color?");
+
+  let foundEyeColorType = people.filter(function(person){
+    if(person.eyeColor === EyeColorInput){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+
+  return foundEyeColorType;
+}
+
+function searchByHeight(people){
+  let heightInput = promptFor("What is the approximate height(CM)?");
+
+  let foundHeightType = people.filter(function(person){
+    if(person.height === heightInput){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+
+  return foundHeightType;
+}
+
+
+function searchByWeight(people){
+  let weightInput = promptFor("What is the approximate weight(lbs)?");
+
+  let foundWeightType = people.filter(function(person){
+    if(person.weight === weightInput){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+
+  return foundWeightType;
+}
+
+function searchByAge(people){
+  let ageInput = promptFor("What is the age of the desired person?");
+
+  let foundAgeType = people.filter(function(person){
+    if(person.dob === ageInput){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+
+  return foundAgeType;
+}
+
+//-----------------------------------------------------------------------------------------------------------------
 
 
 
@@ -118,12 +221,6 @@ function displayPerson(person){
   // TODO: finish getting the rest of the information to display
   alert(personInfo);
 }
-
-
-
-// ---------------------------------------------------------------------------
-
-
 
 // function that prompts and validates user input
 function promptFor(question, valid){
