@@ -14,14 +14,14 @@ function app(people){
     case 'no':
       searchResults = searchByTraits(people); 
       break;
-      default:
-    app(people); // restart app
+    default:
+      app(people); // restart app
       break;
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
 
-  mainMenu(searchResults, people); 
+  mainMenu(searchResults[0], people); 
 }
 
 // Menu function to call once you find who you are looking for
@@ -78,8 +78,8 @@ function searchByName(people){
 }
 
 // make a switch case
-function searchByTraits(people){
-  let displayOptionForTraits = prompt("If you know any of these traits about your desired person, type the trait name: 'gender', 'age', 'height', 'weight', 'eye color', or type 'restart' or 'quit'");
+function searchByTraits(people, originalData = null){
+  let displayOptionForTraits = promptFor("If you know any of these traits about your desired person, type the trait name: 'gender', 'age', 'height', 'weight', 'eye color', or type 'restart' or 'quit'", chars);
   let searchResults;
   switch(displayOptionForTraits){
     case 'gender':
@@ -105,12 +105,23 @@ function searchByTraits(people){
     default:
       return searchByTraits(people); // ask again  
   }
-
+  // work on this part tonight 9/23/19
   if(searchResults.length > 1 ){
-  return searchByTraits(searchResults);
+    if (people.length < 22){
+     return searchByTraits(searchResults, originalData);
+    }
+    else{
+      return searchByTraits(searchResults, people);
+    }
   }
-  else if(searchResults.length == 1){
-  return searchResults;
+  else if(searchResults.length === 1){
+    return searchResults;
+  }
+  else if(searchResults.length === 0){
+    if(people.length < 22){
+    }
+    alert("starting over");
+    app(people);
   }
 }
 
@@ -134,7 +145,7 @@ function searchByGender(people){
 }
 
 function searchByEyeColor(people){
-  let EyeColorInput = promptFor("What is the eye color?");
+  let EyeColorInput = promptFor("What is the eye color?", chars);
 
   let foundEyeColorType = people.filter(function(person){
     if(person.eyeColor === EyeColorInput){
@@ -149,10 +160,10 @@ function searchByEyeColor(people){
 }
 
 function searchByHeight(people){
-  let heightInput = promptFor("What is the approximate height(CM)?");
+  let heightInput = promptFor("What is the approximate height(CM)?", chars);
 
   let foundHeightType = people.filter(function(person){
-    if(person.height === heightInput){
+    if(person.height == heightInput){
       return true;
     }
     else{
@@ -165,10 +176,10 @@ function searchByHeight(people){
 
 
 function searchByWeight(people){
-  let weightInput = promptFor("What is the approximate weight(lbs)?");
+  let weightInput = promptFor("What is the approximate weight(lbs)?", chars);
 
   let foundWeightType = people.filter(function(person){
-    if(person.weight === weightInput){
+    if(person.weight == weightInput){
       return true;
     }
     else{
@@ -180,7 +191,7 @@ function searchByWeight(people){
 }
 
 function searchByAge(people){
-  let ageInput = promptFor("What is the age of the desired person?");
+  let ageInput = promptFor("What is the age of the desired person?", chars);
 
   let foundAgeType = people.filter(function(person){
     if(person.dob === ageInput){
@@ -240,3 +251,11 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
+
+
+
+
+
+
+// prompt() // built in function with only one parameter
+// promptFor("ask/ string",chars or yesNo ) // has two parameters  
