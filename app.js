@@ -22,7 +22,7 @@ function app(people){
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   mainMenu(searchResults, people); 
 }
-
+ 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
 
@@ -32,8 +32,9 @@ function mainMenu(person, people){
     alert("Could not find that individual.");
     return app(people); // restart
   }
-
+  else {
   let displayOption = prompt("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'");
+  }
 
   switch(displayOption){
     case "info":
@@ -73,6 +74,28 @@ function searchByName(people){
   return foundPerson;
 }
 
+function searchByTraits(person){
+  let genderTrait = promptFor("Please provide the gender type - male or female.", chars);
+  let heightTrait = promptFor("Please provide the height in centimeters between the numbers 0-99.", chars);
+  let weightTrait = promptFor("Please provide the weight in lbs between the numbers 0-1000.", chars);
+  let eyeColorTrait = promptFor("Please provide the eye color.", chars); 
+  // I might have to add a fifth trait for the grading requirement - search by 2/5 criterias 
+
+  let filteredTraits = people.filter(function(attributes){ 
+    if (attributes.gender === genderTrait || attributes.height === heightTrait || attributes.weight === weightTrait || attributes.eyeColor === eyeColorTrait){
+      return true;
+    } 
+    else {
+      app(people);
+    }
+  })
+  return filteredTraits;
+}
+
+
+
+
+
 // alerts a list of people
 function displayPeople(people){
   alert(people.map(function(person){
@@ -104,8 +127,9 @@ function displayPerson(person){
 
 // function that prompts and validates user input
 function promptFor(question, valid){
+    let response = "";
   do{
-    let response = prompt(question).trim();
+    response = prompt(question).trim();
   } while(!response || !valid(response));
   return response;
 }
