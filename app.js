@@ -105,7 +105,7 @@ function searchByTraits(people, originalData = null){
     default:
       return searchByTraits(people); // ask again  
   }
-  // work on this part tonight 9/23/19
+  // this new part of the code is causing the current error.
   if(searchResults.length > 1 ){
     if (people.length < 22){
      return searchByTraits(searchResults, originalData);
